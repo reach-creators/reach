@@ -1,0 +1,16 @@
+# Angular specific
+/dist
+/coverage
+/node_modules
+/tmp
+.angular/
+.cache/
+
+# Build artifacts
+*.js
+*.map
+*.d.ts
+
+# IDE files
+.idea/
+.vscode/
