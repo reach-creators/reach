@@ -2,10 +2,11 @@ import { Component, inject, signal } from "@angular/core";
 import { HealthEndpoint } from "../../services/endpoints/health-endpoint";
 import { HelloWorldModel } from "../../models/hello-world-model";
 import { DatePipe } from "@angular/common";
+import { Button } from "primeng/button";
 
 @Component({
   selector: "health-component",
-  imports: [DatePipe],
+  imports: [DatePipe, Button],
   templateUrl: "./health.component.html",
   styleUrl: "./health.component.scss",
 })

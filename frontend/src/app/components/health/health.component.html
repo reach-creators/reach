@@ -1,8 +1,6 @@
 @let model = helloWorld();
 <div class="flex flex-col items-center">
-  <button class="border rounded-md mt-4" (click)="queryHealth()">
-    Check Health
-  </button>
+  <p-button class="mt-4" label="Check Health" (click)="queryHealth()" />
   @if (hasError()) {
     <p class="text-lg">Error occurred on server side</p>
   } @else if (model) {
