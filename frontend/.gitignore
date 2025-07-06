@@ -3,3 +3,4 @@
 node_modules
 .editorconfig
 frontend.iml
+package-lock.json
