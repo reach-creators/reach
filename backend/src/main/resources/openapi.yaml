@@ -6,7 +6,6 @@ info:
   description: |         
     This is the API specification for the endpoints included in the Reach web app backend.
 
-
 paths:
   /health:
     get:
@@ -91,6 +90,30 @@ paths:
         '404':
           description: Brand not found
 
+  /creator:
+    post:
+      tags:
+        - Creator
+      summary: Create a new creator
+      description: Creates a new creator with the given details.
+      operationId: createCreator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatorInput'
+      responses:
+        '201':
+          description: Creator successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Creator'
+        '400':
+          description: Invalid input
+
+
 components:
   schemas:
     HelloWorld:
@@ -130,3 +153,39 @@ components:
           format: float
         region:
           type: string
+
+    CreatorInput:
+      type: object
+      required: [name, salesPerMonth, itemsSold, niches, region]
+      properties:
+        name:
+          type: string
+        salesPerMonth:
+          type: integer
+        itemsSold:
+          type: integer
+        niches:
+          type: array
+          items:
+            type: string
+            enum:
+              - BEAUTY_AND_PERSONAL_CARE
+              - HEALTH
+              - NUTRITION_AND_WELLNESS
+              - SPORTS_AND_OUTDOOR
+              - VITAMINS_MINERALS_AND_WELLNESS_SUPPLEMENTS
+              - PHONES_AND_ELECTRONICS
+              - FASHION_ACCESSORIES
+              - FRAGRANCE
+              - SKINCARE
+        region:
+          type: string
+
+    Creator:
+      title: Creator
+      allOf:
+        - $ref: '#/components/schemas/CreatorInput'
+        - type: object
+          properties:
+            id:
+              type: integer
