@@ -48,4 +48,4 @@ components:
       description: Health error
       properties:
         error:
-          type: string
+          type: number
