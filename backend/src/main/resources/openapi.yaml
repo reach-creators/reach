@@ -30,6 +30,28 @@ paths:
                 $ref: '#/components/schemas/HelloWorldError'
         '500':
           description: Internal server error
+  /Brand:
+    post:
+      tags:
+        - Brand
+      summary: Add a new Brand
+      description: Call this endpoint to add a new Brand to the database
+      operationId: add Brand
+      responses:
+        '200':
+          description: Brand successfully added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrandCreation'
+        '401':
+          description: Brand not created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrandCreationError'
+        '500':
+          description: Internal or External server error
 
 
 components:
@@ -46,6 +68,29 @@ components:
     HelloWorldError:
       type: object
       description: Health error
+      properties:
+        error:
+          type: string
+        randomNumber:
+          type: number
+    BrandCreation:
+      type: object
+      required:
+        - name
+        - logo
+      description: Brand created on the frontend level containing all details
+      properties:
+        id:
+          type: number
+          readOnly: true
+        name:
+          type: string
+        logo:
+          type: string
+          format: uri
+    BrandCreationError:
+      type: object
+      description: Failed to create a brand
       properties:
         error:
           type: string
