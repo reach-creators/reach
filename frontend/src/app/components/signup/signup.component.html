@@ -1,0 +1,82 @@
+<div class="signup-container">
+  <form *ngIf="step === 1" [formGroup]="signupForm" (ngSubmit)="nextStep()">
+    <h2>Sign Up</h2>
+    <div class="p-field">
+      <label for="username">Username</label>
+      <input id="username" type="text" pInputText formControlName="username" />
+      <div *ngIf="signupForm.get('username')?.invalid && signupForm.get('username')?.touched" class="error">Username is required</div>
+    </div>
+    <div class="p-field">
+      <label for="password">Password</label>
+      <input id="password" type="password" pInputText formControlName="password" />
+      <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched" class="error">Password is required</div>
+    </div>
+    <div class="p-field">
+      <label for="confirmPassword">Confirm Password</label>
+      <input id="confirmPassword" type="password" pInputText formControlName="confirmPassword" />
+      <div *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched" class="error">Confirm your password</div>
+    </div>
+    <div class="p-field">
+      <label for="type">Sign Up As</label>
+      <p-select id="type" [options]="typeOptions" formControlName="type" placeholder="Select type"></p-select>
+      <div *ngIf="signupForm.get('type')?.invalid && signupForm.get('type')?.touched" class="error">Type is required</div>
+    </div>
+    <button pButton type="submit" label="Next"></button>
+  </form>
+
+  <form *ngIf="step === 2 && signupForm.value.type === 'brand'" [formGroup]="brandForm" (ngSubmit)="submitBrand()">
+    <h2>Brand Signup</h2>
+    <div class="p-field">
+      <label for="brandName">Brand Name</label>
+      <input id="brandName" type="text" pInputText formControlName="name" />
+      <div *ngIf="brandForm.get('name')?.invalid && brandForm.get('name')?.touched" class="error">Brand name is required</div>
+    </div>
+    <div class="p-field">
+      <label for="logo">Logo URL</label>
+      <input id="logo" type="text" pInputText formControlName="logo" />
+    </div>
+    <div class="p-field">
+      <label for="revenuePerMonth">Revenue Per Month</label>
+      <input id="revenuePerMonth" type="number" pInputText formControlName="revenuePerMonth" />
+    </div>
+    <div class="p-field">
+      <label for="itemsSold">Items Sold</label>
+      <input id="itemsSold" type="number" pInputText formControlName="itemsSold" />
+    </div>
+    <div class="p-field">
+      <label for="averageUnitPrice">Average Unit Price</label>
+      <input id="averageUnitPrice" type="number" pInputText formControlName="averageUnitPrice" />
+    </div>
+    <div class="p-field">
+      <label for="niches">Niches</label>
+      <p-multiSelect [options]="nicheOptions" formControlName="niches" defaultLabel="Select niches"></p-multiSelect>
+    </div>
+    <div class="p-field">
+      <label for="region">Region</label>
+      <input id="region" type="text" pInputText formControlName="region" />
+    </div>
+    <button pButton type="button" label="Back" (click)="prevStep()"></button>
+    <button pButton type="submit" label="Sign Up"></button>
+  </form>
+
+  <div *ngIf="step === 2 && signupForm.value.type === 'creator'">
+    <!-- Creator signup step will be implemented later -->
+    <h2>Creator Signup</h2>
+    <p>Coming soon...</p>
+    <button pButton type="button" label="Back" (click)="prevStep()"></button>
+  </div>
+</div>
+
+<style>
+.signup-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+.p-field {
+  margin-bottom: 1rem;
+}
+.error {
+  color: red;
+  font-size: 0.8em;
+}
+</style>
