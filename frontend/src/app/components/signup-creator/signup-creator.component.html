@@ -1,0 +1,112 @@
+<div class="signup-creator-container">
+  <div class="signup-form">
+    <h2 class="form-title">Creator Signup</h2>
+    <p class="form-subtitle">Join our platform and start your creator journey</p>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="creator-form">
+      
+      <!-- Name Field -->
+      <div class="form-group">
+        <label for="name" class="form-label">Full Name *</label>
+        <input 
+          type="text" 
+          id="name" 
+          formControlName="name" 
+          class="form-input"
+          placeholder="Enter your full name"
+          [class.error]="isFieldInvalid('name')"
+        />
+        <div class="error-message" *ngIf="isFieldInvalid('name')">
+          <span *ngIf="signupForm.get('name')?.errors?.['required']">Name is required</span>
+        </div>
+      </div>
+
+      <!-- Sales Per Month Field -->
+      <div class="form-group">
+        <label for="salesPerMonth" class="form-label">Monthly Sales ($)</label>
+        <input 
+          type="number" 
+          id="salesPerMonth" 
+          formControlName="salesPerMonth" 
+          class="form-input"
+          placeholder="Enter your monthly sales amount"
+          min="0"
+        />
+      </div>
+
+      <!-- Items Sold Field -->
+      <div class="form-group">
+        <label for="itemsSold" class="form-label">Total Items Sold</label>
+        <input 
+          type="number" 
+          id="itemsSold" 
+          formControlName="itemsSold" 
+          class="form-input"
+          placeholder="Enter total items sold"
+          min="0"
+        />
+      </div>
+
+      <!-- Region Field -->
+      <div class="form-group">
+        <label for="region" class="form-label">Region</label>
+        <select 
+          id="region" 
+          formControlName="region" 
+          class="form-select"
+        >
+          <option value="">Select your region</option>
+          <option value="North America">North America</option>
+          <option value="Europe">Europe</option>
+          <option value="Asia">Asia</option>
+          <option value="South America">South America</option>
+          <option value="Africa">Africa</option>
+          <option value="Australia">Australia</option>
+        </select>
+      </div>
+
+      <!-- Niches Field -->
+      <div class="form-group">
+        <label class="form-label">Niches *</label>
+        <div class="niches-container">
+          <div class="niche-checkbox" *ngFor="let niche of availableNiches">
+            <input 
+              type="checkbox" 
+              [id]="niche.value" 
+              [value]="niche.value"
+              (change)="onNicheChange($event, niche.value)"
+              [checked]="selectedNiches.includes(niche.value)"
+              class="niche-input"
+            />
+            <label [for]="niche.value" class="niche-label">{{ niche.label }}</label>
+          </div>
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('niches')">
+          <span *ngIf="signupForm.get('niches')?.errors?.['required']">Please select at least one niche</span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="submit-btn"
+          [disabled]="signupForm.invalid || isSubmitting"
+        >
+          <span *ngIf="!isSubmitting">Create Account</span>
+          <span *ngIf="isSubmitting">Creating Account...</span>
+        </button>
+      </div>
+
+      <!-- Success Message -->
+      <div class="success-message" *ngIf="isSuccess">
+        <p>Account created successfully! Welcome to our platform.</p>
+      </div>
+
+      <!-- Error Message -->
+      <div class="error-message" *ngIf="submitError">
+        <p>{{ submitError }}</p>
+      </div>
+    </form>
+  </div>
+</div>

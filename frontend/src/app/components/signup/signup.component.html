@@ -60,10 +60,8 @@
   </form>
 
   <div *ngIf="step === 2 && signupForm.value.type === 'creator'">
-    <!-- Creator signup step will be implemented later -->
-    <h2>Creator Signup</h2>
-    <p>Coming soon...</p>
-    <button pButton type="button" label="Back" (click)="prevStep()"></button>
+    <app-signup-creator />
+    <button pButton type="button" label="Back" (click)="prevStep()" style="margin-top: 20px;"></button>
   </div>
 </div>
 

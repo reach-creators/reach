@@ -6,6 +6,7 @@ import { SelectModule } from 'primeng/select';
 import { MultiSelect } from 'primeng/multiselect';
 import { InputText } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
+import { SignupCreatorComponent } from '../signup-creator/signup-creator.component';
 
 @Component({
   selector: 'app-signup',
@@ -17,6 +18,7 @@ import { CommonModule } from '@angular/common';
     SelectModule,
     MultiSelect,
     InputText,
+    SignupCreatorComponent,
   ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
@@ -86,10 +88,4 @@ export class SignupComponent {
       this.brandForm.markAllAsTouched();
     }
   }
-}
-
-signupBrand(brand: Brand) {
-
-  this.healthEndpoint.postSignup(brand); // yro7 3el service
-  // yro7 3el home page
 }
