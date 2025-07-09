@@ -49,5 +49,3 @@ components:
       properties:
         error:
           type: string
-        randomNumber:
-          type: number
