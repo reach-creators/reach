@@ -3,7 +3,7 @@ openapi: 3.0.0
 info:
   title: Reach Backend API
   version: 0.0.1-SNAPSHOT
-  description: |         
+  description: |
     This is the API specification for the endpoints included in the Reach web app backend.
 
 paths:
@@ -51,8 +51,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Creator'
         '400':
-          description: Invalid input          
-
+          description: Invalid input
 
 components:
   schemas:
@@ -65,6 +64,7 @@ components:
         timestamp:
           type: string
           format: date-time
+
     HelloWorldError:
       type: object
       description: Health error
@@ -73,7 +73,21 @@ components:
           type: string
         randomNumber:
           type: number
-    
+
+    Niche:
+      type: string
+      enum:
+        - BEAUTY_AND_PERSONAL_CARE
+        - HEALTH
+        - NUTRITION_AND_WELLNESS
+        - SPORTS_AND_OUTDOOR
+        - VITAMINS_MINERALS_AND_WELLNESS_SUPPLEMENTS
+        - PHONES_AND_ELECTRONICS
+        - FASHION_ACCESSORIES
+        - FRAGRANCE
+        - SKINCARE
+      description: Enum representing the niche of the creator.
+
     CreatorInput:
       type: object
       required: [name, salesPerMonth, itemsSold, niches, region]
@@ -87,17 +101,7 @@ components:
         niches:
           type: array
           items:
-            type: string
-            enum:
-              - BEAUTY_AND_PERSONAL_CARE
-              - HEALTH
-              - NUTRITION_AND_WELLNESS
-              - SPORTS_AND_OUTDOOR
-              - VITAMINS_MINERALS_AND_WELLNESS_SUPPLEMENTS
-              - PHONES_AND_ELECTRONICS
-              - FASHION_ACCESSORIES
-              - FRAGRANCE
-              - SKINCARE
+            $ref: '#/components/schemas/Niche'
         region:
           type: string
 

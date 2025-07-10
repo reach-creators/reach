@@ -16,8 +16,9 @@ public class CreatorController implements CreatorApi {
 
   @Override
   public ResponseEntity<CreatorDto> createCreator(CreatorInputDto creatorInputDto) {
-    return ResponseEntity
-        .status(201)
-        .body(CreatorMapper.MAPPER.toDto(creatorService.create(creatorInputDto)));
+    var entity = CreatorMapper.MAPPER.toEntity(creatorInputDto);
+    var saved = creatorService.create(entity);
+    return ResponseEntity.status(201).body(CreatorMapper.MAPPER.toDto(saved));
   }
 }
+
