@@ -113,6 +113,55 @@ paths:
         '400':
           description: Invalid input
 
+  /creator/{id}:
+    put:
+      tags:
+        - Creator
+      summary: Update an existing creator
+      operationId: updateCreator
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatorInput'
+      responses:
+        '200':
+          description: Creator updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Creator'
+        '404':
+          description: Creator not found
+
+    get:
+      tags:
+        - Creator
+      summary: Get creator by ID
+      operationId: getCreatorById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Creator found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Creator'
+        '404':
+          description: Creator not found
+
 components:
   schemas:
     HelloWorld:
