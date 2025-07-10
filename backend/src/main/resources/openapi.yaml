@@ -37,6 +37,12 @@ paths:
       summary: Add a new Brand
       description: Call this endpoint to add a new Brand to the database
       operationId: add Brand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BrandCreation'
       responses:
         '200':
           description: Brand successfully added
