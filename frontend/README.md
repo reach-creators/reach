@@ -57,3 +57,27 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Signup Features
+
+- **Brand and Creator Signup:**
+  - Separate flows for brands and creators, each with their own form and validation.
+  - Brand signup collects: name, logo, revenue, items sold, average unit price, niches, region, username, and password.
+  - Creator signup collects: name, sales per month, items sold, niches, region, username, and password.
+
+- **Password Restrictions:**
+  - Minimum 8 characters
+  - Must contain at least one uppercase letter, one lowercase letter, one number, and one symbol
+  - Real-time validation feedback in the UI
+
+- **Password Hashing:**
+  - Passwords are hashed using SHA-256 in the browser before being sent to the backend for improved security.
+
+- **Modern UI/UX:**
+  - Responsive, modern design using Tailwind CSS and PrimeNG
+  - Clear error and success messages
+  - Loading and disabled states for buttons
+
+- **Navigation:**
+  - Signup button on the home page routes to the signup form
+  - After successful signup, users are redirected to the home page
