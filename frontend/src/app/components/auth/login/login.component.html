@@ -1,0 +1,37 @@
+<p-card class="max-w-3xl">
+  <div class="flex flex-col items-center gap-2 max-w-3xl">
+    <p-inputgroup class="max-w-max">
+      <p-inputgroup-addon>
+        <i class="pi pi-user"></i>
+      </p-inputgroup-addon>
+      <p-floatlabel variant="on">
+        <input
+          class="min-w-xs"
+          pInputText
+          type="email"
+          [formControl]="loginModel.email"
+        />
+        <label>Email</label>
+      </p-floatlabel>
+    </p-inputgroup>
+    <p-inputgroup class="max-w-max">
+      <p-inputgroup-addon>
+        <i class="pi pi-lock"></i>
+      </p-inputgroup-addon>
+      <p-floatlabel variant="on">
+        <input
+          class="min-w-xs"
+          pInputText
+          type="password"
+          [formControl]="loginModel.password"
+        />
+        <label>Password</label>
+      </p-floatlabel>
+    </p-inputgroup>
+    <p-button
+      (onClick)="submit()"
+      label="Submit"
+      [disabled]="loginModel.nonConfiguredCredentials()"
+    />
+  </div>
+</p-card>
