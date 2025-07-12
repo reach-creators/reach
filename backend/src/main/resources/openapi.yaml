@@ -36,20 +36,20 @@ paths:
         - Brand
       summary: Add a new Brand
       description: Call this endpoint to add a new Brand to the database
-      operationId: add Brand
+      operationId: addBrand
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BrandCreation'
+              $ref: '#/components/schemas/Brand'
       responses:
         '200':
           description: Brand successfully added
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BrandCreation'
+                $ref: '#/components/schemas/Brand'
         '401':
           description: Brand not created
           content:
@@ -79,7 +79,7 @@ components:
           type: string
         randomNumber:
           type: number
-    BrandCreation:
+    Brand:
       type: object
       required:
         - name
@@ -88,12 +88,20 @@ components:
       properties:
         id:
           type: integer
-          readOnly: true
         name:
           type: string
         logo:
           type: string
           format: uri
+        revenuePerMonth:
+          type: integer
+        itemsSold:
+          type: integer
+        averageUnitPrice:
+          type: number
+          format: float
+        region:
+          type: string
     BrandCreationError:
       type: object
       description: Failed to create a brand

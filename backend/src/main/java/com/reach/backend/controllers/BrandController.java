@@ -1,21 +1,22 @@
 package com.reach.backend.controllers;
 
 import com.example.reach.backend.api.BrandApi;
-import com.example.reach.backend.dto.BrandCreationDto;
+import com.example.reach.backend.dto.BrandDto;
+import com.reach.backend.domain.tables.Brand;
+import com.reach.backend.mappers.BrandMapper;
 import com.reach.backend.services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class BrandController implements BrandApi {
-    @Autowired
-    private BrandService brandService;
+  @Autowired private BrandService brandService;
 
-    @Override
-    public ResponseEntity<BrandCreationDto> addBrand(@RequestBody BrandCreationDto brandCreationDto) {
-        brandService.createBrand(brandCreationDto);
-        return ResponseEntity.ok().build();
-    }
+  @Override
+  public ResponseEntity<BrandDto> addBrand(BrandDto brandDto) {
+    Brand brand = BrandMapper.MAPPER.map(brandDto);
+    BrandDto createdBrand = BrandMapper.MAPPER.map(brandService.createBrand(brand));
+    return ResponseEntity.ok(createdBrand);
+  }
 }
