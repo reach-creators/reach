@@ -15,7 +15,7 @@ public class BrandService {
     private BrandRepository brandRepository;
 
     public void createBrand(BrandCreationDto brandCreationDto) {
-        Brand brand = BrandMapper.MAPPER.toEntity(brandCreationDto);
+        Brand brand = BrandMapper.MAPPER.map(brandCreationDto);
         brandRepository.save(brand);
     }
 }

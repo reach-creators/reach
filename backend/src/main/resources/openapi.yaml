@@ -87,7 +87,7 @@ components:
       description: Brand created on the frontend level containing all details
       properties:
         id:
-          type: number
+          type: integer
           readOnly: true
         name:
           type: string
