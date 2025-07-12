@@ -1,80 +1,70 @@
-<div class="signup-container">
-  <form *ngIf="step === 1" [formGroup]="signupForm" (ngSubmit)="nextStep()">
-    <h2>Sign Up</h2>
-    <div class="p-field">
-      <label for="username">Username</label>
-      <input id="username" type="text" pInputText formControlName="username" />
-      <div *ngIf="signupForm.get('username')?.invalid && signupForm.get('username')?.touched" class="error">Username is required</div>
+<div class="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-400 to-purple-700 p-5">
+  <form *ngIf="step === 1" [formGroup]="signupForm" (ngSubmit)="nextStep()" class="bg-white rounded-2xl shadow-2xl p-10 w-full max-w-lg animate-slideUp">
+    <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">Sign Up</h2>
+    <div class="mb-4 flex flex-col gap-1">
+      <label for="username" class="font-semibold text-gray-700 text-sm mb-1">Username</label>
+      <input id="username" type="text" pInputText formControlName="username" class="px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 bg-white" />
+      <div *ngIf="signupForm.get('username')?.invalid && signupForm.get('username')?.touched" class="text-red-600 text-xs mt-1 flex items-center gap-1"><span class="text-base">&#9888;</span> Username is required</div>
     </div>
-    <div class="p-field">
-      <label for="password">Password</label>
-      <input id="password" type="password" pInputText formControlName="password" />
-      <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched" class="error">Password is required</div>
+    <div class="mb-4 flex flex-col gap-1">
+      <label for="password" class="font-semibold text-gray-700 text-sm mb-1">Password</label>
+      <input id="password" type="password" pInputText formControlName="password" class="px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 bg-white" />
+      <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched" class="text-red-600 text-xs mt-1 flex items-center gap-1">
+        <span class="text-base">&#9888;</span>
+        <span *ngIf="signupForm.get('password')?.errors?.['required']">Password is required</span>
+        <span *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters</span>
+        <span *ngIf="signupForm.get('password')?.errors?.['pattern']">Password must contain uppercase, lowercase, number, and symbol</span>
+      </div>
     </div>
-    <div class="p-field">
-      <label for="confirmPassword">Confirm Password</label>
-      <input id="confirmPassword" type="password" pInputText formControlName="confirmPassword" />
-      <div *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched" class="error">Confirm your password</div>
+    <div class="mb-4 flex flex-col gap-1">
+      <label for="confirmPassword" class="font-semibold text-gray-700 text-sm mb-1">Confirm Password</label>
+      <input id="confirmPassword" type="password" pInputText formControlName="confirmPassword" class="px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 bg-white" />
+      <div *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched" class="text-red-600 text-xs mt-1 flex items-center gap-1"><span class="text-base">&#9888;</span> Confirm your password</div>
+      <div *ngIf="signupForm.errors?.['passwordMismatch'] && (signupForm.get('confirmPassword')?.touched || signupForm.get('password')?.touched)" class="text-red-600 text-xs mt-1 flex items-center gap-1"><span class="text-base">&#9888;</span> Passwords do not match</div>
     </div>
-    <div class="p-field">
-      <label for="type">Sign Up As</label>
-      <p-select id="type" [options]="typeOptions" formControlName="type" placeholder="Select type"></p-select>
-      <div *ngIf="signupForm.get('type')?.invalid && signupForm.get('type')?.touched" class="error">Type is required</div>
+    <div class="mb-4 flex flex-col gap-1">
+      <label for="type" class="font-semibold text-gray-700 text-sm mb-1">Sign Up As</label>
+      <p-select id="type" [options]="typeOptions" formControlName="type" placeholder="Select type" class=""></p-select>
+      <div *ngIf="signupForm.get('type')?.invalid && signupForm.get('type')?.touched" class="text-red-600 text-xs mt-1 flex items-center gap-1"><span class="text-base">&#9888;</span> Type is required</div>
     </div>
-    <button pButton type="submit" label="Next"></button>
+    <button pButton type="submit" label="Next" class="w-full py-3 mt-2 bg-gradient-to-r from-indigo-400 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:from-indigo-500 hover:to-purple-700 transition-all"></button>
   </form>
 
-  <form *ngIf="step === 2 && signupForm.value.type === 'brand'" [formGroup]="brandForm" (ngSubmit)="submitBrand()">
-    <h2>Brand Signup</h2>
-    <div class="p-field">
-      <label for="brandName">Brand Name</label>
-      <input id="brandName" type="text" pInputText formControlName="name" />
-      <div *ngIf="brandForm.get('name')?.invalid && brandForm.get('name')?.touched" class="error">Brand name is required</div>
+  <form *ngIf="step === 2 && signupForm.value.type === 'brand'" [formGroup]="brandForm" (ngSubmit)="submitBrand()" class="bg-white rounded-2xl shadow-2xl p-10 w-full max-w-lg animate-slideUp">
+    <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">Brand Signup</h2>
+    <div class="mb-4 flex flex-col gap-1">
+      <label for="brandName" class="font-semibold text-gray-700 text-sm mb-1">Brand Name</label>
+      <input id="brandName" type="text" pInputText formControlName="name" class="px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 bg-white" />
+      <div *ngIf="brandForm.get('name')?.invalid && brandForm.get('name')?.touched" class="text-red-600 text-xs mt-1 flex items-center gap-1"><span class="text-base">&#9888;</span> Brand name is required</div>
     </div>
-    <div class="p-field">
-      <label for="logo">Logo URL</label>
-      <input id="logo" type="text" pInputText formControlName="logo" />
+    <div class="mb-4 flex flex-col gap-1">
+      <label for="revenuePerMonth" class="font-semibold text-gray-700 text-sm mb-1">Revenue Per Month</label>
+      <input id="revenuePerMonth" type="number" pInputText formControlName="revenuePerMonth" class="px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 bg-white" />
     </div>
-    <div class="p-field">
-      <label for="revenuePerMonth">Revenue Per Month</label>
-      <input id="revenuePerMonth" type="number" pInputText formControlName="revenuePerMonth" />
+    <div class="mb-4 flex flex-col gap-1">
+      <label for="itemsSold" class="font-semibold text-gray-700 text-sm mb-1">Items Sold</label>
+      <input id="itemsSold" type="number" pInputText formControlName="itemsSold" class="px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 bg-white" />
     </div>
-    <div class="p-field">
-      <label for="itemsSold">Items Sold</label>
-      <input id="itemsSold" type="number" pInputText formControlName="itemsSold" />
+    <div class="mb-4 flex flex-col gap-1">
+      <label for="averageUnitPrice" class="font-semibold text-gray-700 text-sm mb-1">Average Unit Price</label>
+      <input id="averageUnitPrice" type="number" pInputText formControlName="averageUnitPrice" class="px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 bg-white" />
     </div>
-    <div class="p-field">
-      <label for="averageUnitPrice">Average Unit Price</label>
-      <input id="averageUnitPrice" type="number" pInputText formControlName="averageUnitPrice" />
+    <div class="mb-4 flex flex-col gap-1">
+      <label for="niches" class="font-semibold text-gray-700 text-sm mb-1">Niches</label>
+      <p-multiSelect [options]="nicheOptions" formControlName="niches" defaultLabel="Select niches" class=""></p-multiSelect>
     </div>
-    <div class="p-field">
-      <label for="niches">Niches</label>
-      <p-multiSelect [options]="nicheOptions" formControlName="niches" defaultLabel="Select niches"></p-multiSelect>
+    <div class="mb-4 flex flex-col gap-1">
+      <label for="region" class="font-semibold text-gray-700 text-sm mb-1">Region</label>
+      <input id="region" type="text" pInputText formControlName="region" class="px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 bg-white" />
     </div>
-    <div class="p-field">
-      <label for="region">Region</label>
-      <input id="region" type="text" pInputText formControlName="region" />
+    <div class="flex gap-2 mt-2">
+      <button pButton type="button" label="Back" (click)="prevStep()" class="flex-1 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg shadow hover:bg-gray-300 transition-all"></button>
+      <button pButton type="submit" label="Sign Up" class="flex-1 py-3 bg-gradient-to-r from-indigo-400 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:from-indigo-500 hover:to-purple-700 transition-all"></button>
     </div>
-    <button pButton type="button" label="Back" (click)="prevStep()"></button>
-    <button pButton type="submit" label="Sign Up"></button>
   </form>
 
-  <div *ngIf="step === 2 && signupForm.value.type === 'creator'">
+  <div *ngIf="step === 2 && signupForm.value.type === 'creator'" class="w-full max-w-lg">
     <app-signup-creator />
-    <button pButton type="button" label="Back" (click)="prevStep()" style="margin-top: 20px;"></button>
+    <button pButton type="button" label="Back" (click)="prevStep()" class="w-full py-3 mt-5 bg-gray-200 text-gray-700 font-semibold rounded-lg shadow hover:bg-gray-300 transition-all"></button>
   </div>
 </div>
-
-<style>
-.signup-container {
-  max-width: 400px;
-  margin: 0 auto;
-}
-.p-field {
-  margin-bottom: 1rem;
-}
-.error {
-  color: red;
-  font-size: 0.8em;
-}
-</style>

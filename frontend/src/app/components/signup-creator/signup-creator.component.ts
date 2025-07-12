@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Creator } from '../../data-access/creator';
+import { CreatorSignupEndpoint } from '../../services/endpoints/creator-signup-endpoint';
+import { Router, RouterModule } from '@angular/router';
 
 interface NicheOption {
   value: string;
@@ -9,7 +12,7 @@ interface NicheOption {
 
 @Component({
   selector: 'app-signup-creator',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './signup-creator.component.html',
   styleUrl: './signup-creator.component.scss'
 })
@@ -32,7 +35,7 @@ export class SignupCreatorComponent implements OnInit {
     { value: 'SKINCARE', label: 'Skincare' }
   ];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private creatorSignupEndpoint: CreatorSignupEndpoint, private router: Router) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -67,25 +70,32 @@ export class SignupCreatorComponent implements OnInit {
     if (this.signupForm.valid) {
       this.isSubmitting = true;
       this.submitError = '';
-      
-      const formData = this.signupForm.value;
-      console.log('Form submitted:', formData);
-      
-      // Simulate API call
-      setTimeout(() => {
-        this.isSubmitting = false;
-        this.isSuccess = true;
-        this.signupForm.reset();
-        this.selectedNiches = [];
-        
-        // Reset success message after 3 seconds
-        setTimeout(() => {
-          this.isSuccess = false;
-        }, 3000);
-      }, 1500);
+      const creator: Creator = {
+        name: this.signupForm.value.name,
+        salesPerMonth: this.signupForm.value.salesPerMonth,
+        itemsSold: this.signupForm.value.itemsSold,
+        region: this.signupForm.value.region,
+        niches: this.signupForm.value.niches,
+      };
+      this.creatorSignupEndpoint.signupCreator(creator).subscribe({
+        next: (response) => {
+          this.isSubmitting = false;
+          this.isSuccess = true;
+          this.signupForm.reset();
+          this.selectedNiches = [];
+          setTimeout(() => {
+            this.isSuccess = false;
+          }, 3000);
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          this.submitError = 'Signup failed. Please try again.';
+        }
+      });
     } else {
       this.markFormGroupTouched();
     }
+    this.router.navigate(['/']);
   }
 
   private markFormGroupTouched(): void {
