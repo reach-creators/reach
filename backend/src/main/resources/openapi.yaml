@@ -3,9 +3,8 @@ openapi: 3.0.0
 info:
   title: Reach Backend API
   version: 0.0.1-SNAPSHOT
-  description: |         
+  description: |
     This is the API specification for the endpoints included in the Reach web app backend.
-
 
 paths:
   /health:
@@ -31,6 +30,77 @@ paths:
         '500':
           description: Internal server error
 
+  /creator:
+    post:
+      tags:
+        - Creator
+      summary: Create a new creator
+      description: Creates a new creator with the given details.
+      operationId: createCreator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatorInput'
+      responses:
+        '201':
+          description: Creator successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Creator'
+        '400':
+          description: Invalid input
+
+  /creator/{id}:
+    put:
+      tags:
+        - Creator
+      summary: Update an existing creator
+      operationId: updateCreator
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatorInput'
+      responses:
+        '200':
+          description: Creator updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Creator'
+        '404':
+          description: Creator not found
+
+    get:
+      tags:
+        - Creator
+      summary: Get creator by ID
+      operationId: getCreatorById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Creator found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Creator'
+        '404':
+          description: Creator not found
 
 components:
   schemas:
@@ -43,6 +113,7 @@ components:
         timestamp:
           type: string
           format: date-time
+
     HelloWorldError:
       type: object
       description: Health error
@@ -51,3 +122,43 @@ components:
           type: string
         randomNumber:
           type: number
+
+    Niche:
+      type: string
+      enum:
+        - BEAUTY_AND_PERSONAL_CARE
+        - HEALTH
+        - NUTRITION_AND_WELLNESS
+        - SPORTS_AND_OUTDOOR
+        - VITAMINS_MINERALS_AND_WELLNESS_SUPPLEMENTS
+        - PHONES_AND_ELECTRONICS
+        - FASHION_ACCESSORIES
+        - FRAGRANCE
+        - SKINCARE
+      description: Enum representing the niche of the creator.
+
+    CreatorInput:
+      type: object
+      required: [name, salesPerMonth, itemsSold, niches, region]
+      properties:
+        name:
+          type: string
+        salesPerMonth:
+          type: integer
+        itemsSold:
+          type: integer
+        niches:
+          type: array
+          items:
+            $ref: '#/components/schemas/Niche'
+        region:
+          type: string
+
+    Creator:
+      title: Creator
+      allOf:
+        - $ref: '#/components/schemas/CreatorInput'
+        - type: object
+          properties:
+            id:
+              type: integer
