@@ -10,7 +10,16 @@ public class BrandService {
 
   @Autowired private BrandRepository brandRepository;
 
+  public Brand getBrand(Integer id) {
+    return brandRepository.getReferenceById(id);
+  }
+
   public Brand createBrand(Brand brand) {
     return brandRepository.save(brand);
+  }
+
+  public void updateBrand(Brand brand) {
+    getBrand(brand.getId()); // Throws exception if brand not found
+    brandRepository.save(brand);
   }
 }
