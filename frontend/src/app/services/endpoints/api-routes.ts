@@ -19,3 +19,5 @@ class RouteBuilder {
 }
 
 export const health = new RouteBuilder().resolve("health").build();
+export const signupBrand = new RouteBuilder().resolve("signup").resolve("brand").build();
+export const signupCreator = new RouteBuilder().resolve("signup").resolve("creator").build();
