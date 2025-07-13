@@ -22,7 +22,6 @@ public final class Brand {
   @Column(nullable = false)
   private String name;
 
-  @Column(columnDefinition = "VARCHAR(2048)")
   private URI logo;
 
   @Column(name = "revenue_per_month")
