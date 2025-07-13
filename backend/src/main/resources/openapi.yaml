@@ -30,7 +30,66 @@ paths:
                 $ref: '#/components/schemas/HelloWorldError'
         '500':
           description: Internal server error
-
+  /brand:
+    post:
+      tags:
+        - Brand
+      summary: Add a new Brand
+      description: Add a new Brand to the database
+      operationId: addBrand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Brand'
+      responses:
+        '201':
+          description: Brand successfully added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Brand'
+    put:
+      tags:
+        - Brand
+      summary: Update an existing Brand
+      description: Update an existing Brand in the database
+      operationId: updateBrand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Brand'
+      responses:
+        '204':
+          description: Brand successfully updated
+        '404':
+          description: Brand to be updated not found
+  /brand/{id}:
+    get:
+      tags:
+        - Brand
+      summary: Get an existing Brand
+      description: Get an existing Brand by its id
+      operationId: getBrand
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the brand to retrieve
+      responses:
+        '200':
+          description: Brand successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Brand'
+        '404':
+          description: Brand not found
 
 components:
   schemas:
@@ -51,3 +110,23 @@ components:
           type: string
         randomNumber:
           type: number
+    Brand:
+      type: object
+      description: Brand created on the frontend level containing all details
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        logo:
+          type: string
+          format: uri
+        revenuePerMonth:
+          type: integer
+        itemsSold:
+          type: integer
+        averageUnitPrice:
+          type: number
+          format: float
+        region:
+          type: string
