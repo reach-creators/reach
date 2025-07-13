@@ -35,7 +35,7 @@ paths:
         - Brand
       summary: Add a new Brand
       description: Add a new Brand to the database
-      operationId: addBrand
+      operationId: createBrand
       requestBody:
         required: true
         content:
@@ -102,7 +102,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreatorInput'
+              $ref: '#/components/schemas/Creator'
       responses:
         '201':
           description: Creator successfully created
@@ -112,40 +112,29 @@ paths:
                 $ref: '#/components/schemas/Creator'
         '400':
           description: Invalid input
-
-  /creator/{id}:
     put:
       tags:
         - Creator
       summary: Update an existing creator
       operationId: updateCreator
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreatorInput'
+              $ref: '#/components/schemas/Creator'
       responses:
-        '200':
+        '204':
           description: Creator updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Creator'
         '404':
           description: Creator not found
 
+  /creator/{id}:
     get:
       tags:
         - Creator
       summary: Get creator by ID
-      operationId: getCreatorById
+      operationId: getCreator
       parameters:
         - name: id
           in: path
@@ -200,9 +189,29 @@ components:
         averageUnitPrice:
           type: number
           format: float
+        niches:
+          type: array
+          items:
+            $ref: '#/components/schemas/Niche'
         region:
           type: string
-
+    Creator:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        salesPerMonth:
+          type: integer
+        itemsSold:
+          type: integer
+        niches:
+          type: array
+          items:
+            $ref: '#/components/schemas/Niche'
+        region:
+          type: string
 
     Niche:
       type: string
@@ -217,29 +226,3 @@ components:
         - FRAGRANCE
         - SKINCARE
       description: Enum representing the niche of the creator.
-
-    CreatorInput:
-      type: object
-      required: [name, salesPerMonth, itemsSold, niches, region]
-      properties:
-        name:
-          type: string
-        salesPerMonth:
-          type: integer
-        itemsSold:
-          type: integer
-        niches:
-          type: array
-          items:
-            $ref: '#/components/schemas/Niche'
-        region:
-          type: string
-
-    Creator:
-      title: Creator
-      allOf:
-        - $ref: '#/components/schemas/CreatorInput'
-        - type: object
-          properties:
-            id:
-              type: integer

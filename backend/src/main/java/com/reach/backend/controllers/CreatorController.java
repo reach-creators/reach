@@ -1,41 +1,37 @@
 package com.reach.backend.controllers;
 
+import static com.reach.backend.mappers.CreatorMapper.MAPPER;
+import static org.springframework.http.HttpStatus.CREATED;
+
 import com.example.reach.backend.api.CreatorApi;
 import com.example.reach.backend.dto.CreatorDto;
-import com.example.reach.backend.dto.CreatorInputDto;
-import com.reach.backend.services.CreatorService;
 import com.reach.backend.domain.tables.Creator;
-import com.reach.backend.mappers.CreatorMapper;
+import com.reach.backend.services.CreatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class CreatorController implements CreatorApi {
+public final class CreatorController implements CreatorApi {
 
-  @Autowired
-  private CreatorService creatorService;
+  @Autowired private CreatorService creatorService;
 
   @Override
-  public ResponseEntity<CreatorDto> createCreator(CreatorInputDto creatorInputDto) {
-    var entity = CreatorMapper.MAPPER.toEntity(creatorInputDto);
-    var saved = creatorService.create(entity);
-    return ResponseEntity.status(201).body(CreatorMapper.MAPPER.toDto(saved));
+  public ResponseEntity<CreatorDto> getCreator(Integer id) {
+    Creator creator = creatorService.getCreator(id);
+    return ResponseEntity.ok(MAPPER.map(creator));
   }
 
   @Override
-  public ResponseEntity<CreatorDto> updateCreator(Integer id, CreatorInputDto dto) {
-    Creator updated = creatorService.update(id, dto);
-    CreatorDto response = CreatorMapper.MAPPER.toDto(updated);
-    return ResponseEntity.ok(response);
+  public ResponseEntity<CreatorDto> createCreator(CreatorDto creatorDto) {
+    Creator creator = MAPPER.map(creatorDto);
+    Creator createdCreator = creatorService.createCreator(creator);
+    return new ResponseEntity<>(MAPPER.map(createdCreator), CREATED);
   }
 
   @Override
-  public ResponseEntity<CreatorDto> getCreatorById(Integer id) {
-      Creator creator = creatorService.getById(id);
-      CreatorDto dto = CreatorMapper.MAPPER.toDto(creator);
-      return ResponseEntity.ok(dto);
+  public ResponseEntity<Void> updateCreator(CreatorDto creatorDto) {
+    creatorService.updateCreator(MAPPER.map(creatorDto));
+    return ResponseEntity.noContent().build();
   }
-
 }
-
