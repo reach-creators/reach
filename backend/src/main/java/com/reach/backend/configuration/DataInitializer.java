@@ -12,27 +12,29 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+  private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public void run(String... args) throws Exception {
-        if (userRepository.findByEmail("brand@example.com").isEmpty()) {
-            User brandUser = User.builder()
-                    .email("brand@example.com")
-                    .password(passwordEncoder.encode("password123"))
-                    .userType(UserType.BRAND)
-                    .build();
-            userRepository.save(brandUser);
-        }
-
-        if (userRepository.findByEmail("creator@example.com").isEmpty()) {
-            User creatorUser = User.builder()
-                    .email("creator@example.com")
-                    .password(passwordEncoder.encode("password123"))
-                    .userType(UserType.CREATOR)
-                    .build();
-            userRepository.save(creatorUser);
-        }
+  @Override
+  public void run(String... args) throws Exception {
+    if (userRepository.findByEmail("brand@example.com").isEmpty()) {
+      User brandUser =
+          User.builder()
+              .email("brand@example.com")
+              .password(passwordEncoder.encode("password123"))
+              .userType(UserType.BRAND)
+              .build();
+      userRepository.save(brandUser);
     }
+
+    if (userRepository.findByEmail("creator@example.com").isEmpty()) {
+      User creatorUser =
+          User.builder()
+              .email("creator@example.com")
+              .password(passwordEncoder.encode("password123"))
+              .userType(UserType.CREATOR)
+              .build();
+      userRepository.save(creatorUser);
+    }
+  }
 }

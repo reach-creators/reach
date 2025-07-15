@@ -1,24 +1,32 @@
 package com.reach.backend.controllers;
 
-import com.reach.backend.dto.LoginRequestDto;
-import com.reach.backend.dto.LoginResponseDto;
+import static com.reach.backend.mappers.AuthMapper.MAPPER;
+
+import com.example.reach.backend.api.AuthApi;
+import com.example.reach.backend.dto.AuthResponseDto;
+import com.example.reach.backend.dto.SignupRequestDto;
+import com.reach.backend.exceptions.UsernameAlreadyExistsException;
 import com.reach.backend.services.AuthService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
-@RestController
-@RequestMapping("/api/auth") 
-@RequiredArgsConstructor
-public class AuthController {
+@Controller
+public class AuthController implements AuthApi {
 
-    private final AuthService authService;
+  @Autowired private AuthService authService;
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request) {
-        return ResponseEntity.ok(authService.authenticate(request));
-    }
+  @Override
+  public ResponseEntity<AuthResponseDto> signupAuth(SignupRequestDto signupRequestDto)
+      throws UsernameAlreadyExistsException {
+    String token = authService.createAuthentication(MAPPER.map(signupRequestDto));
+    return ResponseEntity.ok(new AuthResponseDto().token(token));
+  }
+
+  @Override
+  public ResponseEntity<AuthResponseDto> loginAuth(
+      com.example.reach.backend.dto.LoginRequestDto loginRequestDto) {
+    String token = authService.authenticate(MAPPER.map(loginRequestDto));
+    return ResponseEntity.ok(new AuthResponseDto().token(token));
+  }
 }

@@ -99,6 +99,7 @@ openApiGenerate {
             'generateSupportingFiles': 'false',
             'artifactVersion'        : '0.0.1-SNAPSHOT',
             'useLombok'              : 'true',
+            'unhandledException'     : 'true'
     ])
     modelNameSuffix.set("Dto")
 }
