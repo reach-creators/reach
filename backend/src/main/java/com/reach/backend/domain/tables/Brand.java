@@ -2,7 +2,7 @@ package com.reach.backend.domain.tables;
 
 import com.reach.backend.domain.enums.Niche;
 import jakarta.persistence.*;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -22,8 +22,7 @@ public final class Brand {
   @Column(nullable = false)
   private String name;
 
-  @Column(columnDefinition = "VARCHAR(2048)")
-  private URL logo;
+  private URI logo;
 
   @Column(name = "revenue_per_month")
   private Integer revenuePerMonth;
