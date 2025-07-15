@@ -29,6 +29,49 @@ paths:
                 $ref: '#/components/schemas/HelloWorldError'
         '500':
           description: Internal server error
+  /signup:
+    post:
+      tags:
+        - Auth
+      summary: Sign up user
+      description: Creates and authenticates a new user with a given role
+      operationId: signupAuth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '200':
+          description: User and token created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '500':
+          description: Internal server error
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Login user
+      description: Returns the token of an authenticated user
+      operationId: loginAuth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: User and token created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '500':
+          description: Internal server error
+
   /brand:
     post:
       tags:
@@ -171,6 +214,37 @@ components:
           type: string
         randomNumber:
           type: number
+
+    SignupRequest:
+      type: object
+      description: Creates new user authentication
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          enum:
+            - BRAND
+            - CREATOR
+            - ADMIN
+            -
+    LoginRequest:
+      type: object
+      description: Request token for existing user
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      description: Returns token for authenticated users
+      properties:
+        token:
+          type: string
+
     Brand:
       type: object
       description: Brand created on the frontend level containing all details
@@ -195,6 +269,7 @@ components:
             $ref: '#/components/schemas/Niche'
         region:
           type: string
+
     Creator:
       type: object
       properties:

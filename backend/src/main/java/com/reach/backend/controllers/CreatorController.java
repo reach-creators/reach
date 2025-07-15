@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public final class CreatorController implements CreatorApi {
+public class CreatorController implements CreatorApi {
 
   @Autowired private CreatorService creatorService;
 

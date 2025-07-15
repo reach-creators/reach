@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public final class BrandController implements BrandApi {
+public class BrandController implements BrandApi {
   @Autowired private BrandService brandService;
 
   @Override
