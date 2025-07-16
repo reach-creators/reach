@@ -7,4 +7,4 @@ export interface Brand {
   averageUnitPrice?: number;
   niches: string[];
   region?: string;
-} 
+}

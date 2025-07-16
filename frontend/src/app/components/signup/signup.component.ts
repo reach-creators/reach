@@ -1,18 +1,32 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { SelectModule } from 'primeng/select';
-import { MultiSelect } from 'primeng/multiselect';
-import { InputText } from 'primeng/inputtext';
-import { CommonModule } from '@angular/common';
-import { SignupCreatorComponent } from '../signup-creator/signup-creator.component';
-import { Brand } from '../../data-access/brand';
-import { BrandSignupEndpoint } from '../../services/endpoints/brand-signup-endpoint';
-import { Router, RouterModule } from '@angular/router';
+import { Component, inject } from "@angular/core";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
+} from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ButtonModule } from "primeng/button";
+import { SelectModule } from "primeng/select";
+import { MultiSelect } from "primeng/multiselect";
+import { InputText } from "primeng/inputtext";
+import { CommonModule } from "@angular/common";
+import { SignupCreatorComponent } from "../signup-creator/signup-creator.component";
+import { Brand } from "../../data-access/brand";
+import { Router, RouterModule } from "@angular/router";
+import { Card } from "primeng/card";
+import { FloatLabel } from "primeng/floatlabel";
+import { InputGroup } from "primeng/inputgroup";
+import { InputGroupAddon } from "primeng/inputgroupaddon";
+import { InputWithIconComponent } from "../utils/input-with-icon/input-with-icon.component";
+import { SignupModel } from "../../models/auth/signup-model";
+import { Role } from "../../data-access/role";
+import { AuthEndpoints } from "../../services/endpoints/auth-endpoints";
 
 @Component({
-  selector: 'app-signup',
+  selector: "app-signup",
   imports: [
     CommonModule,
     FormsModule,
@@ -23,48 +37,85 @@ import { Router, RouterModule } from '@angular/router';
     InputText,
     SignupCreatorComponent,
     RouterModule,
+    Card,
+    InputWithIconComponent,
   ],
-  templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss',
+  templateUrl: "./signup.component.html",
+  styleUrl: "./signup.component.scss",
   standalone: true,
 })
 export class SignupComponent {
+  private readonly authEndpoints = inject(AuthEndpoints);
+
+  signupModel = new SignupModel();
+
+  toTitleCase(role: Role): string {
+    return role.charAt(0) + role.substring(1).toLowerCase();
+  }
+
+  signupUser() {
+    this.authEndpoints
+      .signup({
+        email: this.signupModel.email.value!,
+        password: this.signupModel.password.value!,
+        role: this.signupModel.role.value!,
+      })
+      .subscribe((authResponse) => {});
+  }
+
   step = 1;
   signupForm: FormGroup;
   brandForm: FormGroup;
   typeOptions = [
-    { label: 'Brand', value: 'brand' },
-    { label: 'Creator', value: 'creator' },
+    { label: "Brand", value: "brand" },
+    { label: "Creator", value: "creator" },
   ];
   // Niche options from backend enum
   nicheOptions = [
-    { label: 'Beauty & Personal Care', value: 'BEAUTY_AND_PERSONAL_CARE' },
-    { label: 'Health', value: 'HEALTH' },
-    { label: 'Nutrition & Wellness', value: 'NUTRITION_AND_WELLNESS' },
-    { label: 'Sports & Outdoor', value: 'SPORTS_AND_OUTDOOR' },
-    { label: 'Vitamins, Minerals & Wellness Supplements', value: 'VITAMINS_MINERALS_AND_WELLNESS_SUPPLEMENTS' },
-    { label: 'Phones & Electronics', value: 'PHONES_AND_ELECTRONICS' },
-    { label: 'Fashion Accessories', value: 'FASHION_ACCESSORIES' },
-    { label: 'Fragrance', value: 'FRAGRANCE' },
-    { label: 'Skincare', value: 'SKINCARE' },
+    { label: "Beauty & Personal Care", value: "BEAUTY_AND_PERSONAL_CARE" },
+    { label: "Health", value: "HEALTH" },
+    { label: "Nutrition & Wellness", value: "NUTRITION_AND_WELLNESS" },
+    { label: "Sports & Outdoor", value: "SPORTS_AND_OUTDOOR" },
+    {
+      label: "Vitamins, Minerals & Wellness Supplements",
+      value: "VITAMINS_MINERALS_AND_WELLNESS_SUPPLEMENTS",
+    },
+    { label: "Phones & Electronics", value: "PHONES_AND_ELECTRONICS" },
+    { label: "Fashion Accessories", value: "FASHION_ACCESSORIES" },
+    { label: "Fragrance", value: "FRAGRANCE" },
+    { label: "Skincare", value: "SKINCARE" },
   ];
 
-  constructor(private fb: FormBuilder, private brandSignupEndpoint: BrandSignupEndpoint, private router: Router ) {
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
-    this.signupForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(passwordPattern)]],
-      confirmPassword: ['', Validators.required],
-      type: [null, Validators.required],
-    }, { validators: passwordMatchValidator });
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+  ) {
+    const passwordPattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+    this.signupForm = this.fb.group(
+      {
+        username: ["", Validators.required],
+        password: [
+          "",
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.pattern(passwordPattern),
+          ],
+        ],
+        confirmPassword: ["", Validators.required],
+        type: [null, Validators.required],
+      },
+      { validators: passwordMatchValidator },
+    );
     this.brandForm = this.fb.group({
-      name: ['', Validators.required],
-      logo: [''],
+      name: ["", Validators.required],
+      logo: [""],
       revenuePerMonth: [null],
       itemsSold: [null],
       averageUnitPrice: [null],
       niches: [[]],
-      region: [''],
+      region: [""],
     });
   }
 
@@ -83,13 +134,17 @@ export class SignupComponent {
   async hashPassword(password: string): Promise<string> {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
-    const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
-    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    const hashBuffer = await window.crypto.subtle.digest("SHA-256", data);
+    return Array.from(new Uint8Array(hashBuffer))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
   }
 
   async submitBrand() {
     if (this.brandForm.valid) {
-      const hashedPassword = await this.hashPassword(this.signupForm.value.password);
+      const hashedPassword = await this.hashPassword(
+        this.signupForm.value.password,
+      );
       const brand: Brand = {
         name: this.brandForm.value.name,
         logo: this.brandForm.value.logo,
@@ -101,29 +156,23 @@ export class SignupComponent {
         // Add hashed password if backend expects it (e.g., password: hashedPassword)
       };
       // If backend expects password in signupForm, add it here:
-      const payload = { ...brand, username: this.signupForm.value.username, password: hashedPassword };
-      this.brandSignupEndpoint.signupBrand(payload as any).subscribe({
-        next: (response) => {
-          // Handle success (show message, redirect, etc.)
-          console.log('Brand signup successful:', response);
-          this.router.navigate(['/']);
-        },
-        error: (err) => {
-          // Handle error (show error message)
-          console.error('Brand signup failed:', err);
-        }
-      });
+      const payload = {
+        ...brand,
+        username: this.signupForm.value.username,
+        password: hashedPassword,
+      };
     } else {
       this.brandForm.markAllAsTouched();
     }
   }
   // go back to the home page
-
 }
 
 // Custom validator for password match
-export const passwordMatchValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
-  const password = group.get('password')?.value;
-  const confirmPassword = group.get('confirmPassword')?.value;
+export const passwordMatchValidator: ValidatorFn = (
+  group: AbstractControl,
+): ValidationErrors | null => {
+  const password = group.get("password")?.value;
+  const confirmPassword = group.get("confirmPassword")?.value;
   return password === confirmPassword ? null : { passwordMismatch: true };
 };

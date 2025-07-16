@@ -1,0 +1,14 @@
+<p-inputgroup class="max-w-max">
+  <p-inputgroup-addon>
+    <i [class]="`pi ${icon()}`"></i>
+  </p-inputgroup-addon>
+  <p-floatlabel variant="on">
+    <input
+      class="min-w-xs"
+      pInputText
+      [formControl]="inputControl()"
+      [type]="isPassword() ? 'password' : 'text'"
+    />
+    <label>{{ label() }}</label>
+  </p-floatlabel>
+</p-inputgroup>

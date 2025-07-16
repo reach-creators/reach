@@ -5,4 +5,4 @@ export interface Creator {
   itemsSold?: number;
   niches: string[];
   region?: string;
-} 
+}

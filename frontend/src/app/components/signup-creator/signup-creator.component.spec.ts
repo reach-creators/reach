@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { SignupCreatorComponent } from './signup-creator.component';
+import { SignupCreatorComponent } from "./signup-creator.component";
 
-describe('SignupCreatorComponent', () => {
+describe("SignupCreatorComponent", () => {
   let component: SignupCreatorComponent;
   let fixture: ComponentFixture<SignupCreatorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SignupCreatorComponent]
-    })
-    .compileComponents();
+      imports: [SignupCreatorComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SignupCreatorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

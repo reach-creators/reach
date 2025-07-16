@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Creator } from '../../data-access/creator';
-import { CreatorSignupEndpoint } from '../../services/endpoints/creator-signup-endpoint';
-import { Router, RouterModule } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from "@angular/forms";
+import { CommonModule } from "@angular/common";
+import { Creator } from "../../data-access/creator";
+import { Router, RouterModule } from "@angular/router";
 
 interface NicheOption {
   value: string;
@@ -11,31 +15,37 @@ interface NicheOption {
 }
 
 @Component({
-  selector: 'app-signup-creator',
+  selector: "app-signup-creator",
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
-  templateUrl: './signup-creator.component.html',
-  styleUrl: './signup-creator.component.scss'
+  templateUrl: "./signup-creator.component.html",
+  styleUrl: "./signup-creator.component.scss",
 })
 export class SignupCreatorComponent implements OnInit {
   signupForm!: FormGroup;
   isSubmitting = false;
   isSuccess = false;
-  submitError = '';
+  submitError = "";
   selectedNiches: string[] = [];
 
   availableNiches: NicheOption[] = [
-    { value: 'BEAUTY_AND_PERSONAL_CARE', label: 'Beauty & Personal Care' },
-    { value: 'HEALTH', label: 'Health' },
-    { value: 'NUTRITION_AND_WELLNESS', label: 'Nutrition & Wellness' },
-    { value: 'SPORTS_AND_OUTDOOR', label: 'Sports & Outdoor' },
-    { value: 'VITAMINS_MINERALS_AND_WELLNESS_SUPPLEMENTS', label: 'Vitamins, Minerals & Wellness Supplements' },
-    { value: 'PHONES_AND_ELECTRONICS', label: 'Phones & Electronics' },
-    { value: 'FASHION_ACCESSORIES', label: 'Fashion Accessories' },
-    { value: 'FRAGRANCE', label: 'Fragrance' },
-    { value: 'SKINCARE', label: 'Skincare' }
+    { value: "BEAUTY_AND_PERSONAL_CARE", label: "Beauty & Personal Care" },
+    { value: "HEALTH", label: "Health" },
+    { value: "NUTRITION_AND_WELLNESS", label: "Nutrition & Wellness" },
+    { value: "SPORTS_AND_OUTDOOR", label: "Sports & Outdoor" },
+    {
+      value: "VITAMINS_MINERALS_AND_WELLNESS_SUPPLEMENTS",
+      label: "Vitamins, Minerals & Wellness Supplements",
+    },
+    { value: "PHONES_AND_ELECTRONICS", label: "Phones & Electronics" },
+    { value: "FASHION_ACCESSORIES", label: "Fashion Accessories" },
+    { value: "FRAGRANCE", label: "Fragrance" },
+    { value: "SKINCARE", label: "Skincare" },
   ];
 
-  constructor(private fb: FormBuilder, private creatorSignupEndpoint: CreatorSignupEndpoint, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -43,11 +53,11 @@ export class SignupCreatorComponent implements OnInit {
 
   initForm(): void {
     this.signupForm = this.fb.group({
-      name: ['', [Validators.required]],
+      name: ["", [Validators.required]],
       salesPerMonth: [null],
       itemsSold: [null],
-      region: [''],
-      niches: [[], [Validators.required, Validators.minLength(1)]]
+      region: [""],
+      niches: [[], [Validators.required, Validators.minLength(1)]],
     });
   }
 
@@ -55,9 +65,11 @@ export class SignupCreatorComponent implements OnInit {
     if (event.target.checked) {
       this.selectedNiches.push(nicheValue);
     } else {
-      this.selectedNiches = this.selectedNiches.filter(niche => niche !== nicheValue);
+      this.selectedNiches = this.selectedNiches.filter(
+        (niche) => niche !== nicheValue,
+      );
     }
-    
+
     this.signupForm.patchValue({ niches: this.selectedNiches });
   }
 
@@ -69,7 +81,7 @@ export class SignupCreatorComponent implements OnInit {
   onSubmit(): void {
     if (this.signupForm.valid) {
       this.isSubmitting = true;
-      this.submitError = '';
+      this.submitError = "";
       const creator: Creator = {
         name: this.signupForm.value.name,
         salesPerMonth: this.signupForm.value.salesPerMonth,
@@ -77,29 +89,14 @@ export class SignupCreatorComponent implements OnInit {
         region: this.signupForm.value.region,
         niches: this.signupForm.value.niches,
       };
-      this.creatorSignupEndpoint.signupCreator(creator).subscribe({
-        next: (response) => {
-          this.isSubmitting = false;
-          this.isSuccess = true;
-          this.signupForm.reset();
-          this.selectedNiches = [];
-          setTimeout(() => {
-            this.isSuccess = false;
-          }, 3000);
-        },
-        error: (err) => {
-          this.isSubmitting = false;
-          this.submitError = 'Signup failed. Please try again.';
-        }
-      });
     } else {
       this.markFormGroupTouched();
     }
-    this.router.navigate(['/']);
+    this.router.navigate(["/"]);
   }
 
   private markFormGroupTouched(): void {
-    Object.keys(this.signupForm.controls).forEach(key => {
+    Object.keys(this.signupForm.controls).forEach((key) => {
       const control = this.signupForm.get(key);
       control?.markAsTouched();
     });
