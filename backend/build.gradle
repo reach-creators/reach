@@ -56,7 +56,7 @@ tasks.named('test') {
 }
 
 bootRun {
-    systemProperties.put('spring.datasource.password', env.DATABASE_PASSWORD.value)
+    environment = env.allVariables()
 }
 
 spotless {

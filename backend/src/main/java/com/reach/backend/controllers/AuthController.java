@@ -7,16 +7,17 @@ import com.example.reach.backend.dto.AuthResponseDto;
 import com.example.reach.backend.dto.SignupRequestDto;
 import com.reach.backend.exceptions.UsernameAlreadyExistsException;
 import com.reach.backend.services.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
+@RequiredArgsConstructor
 @Controller
 public class AuthController implements AuthApi {
 
-  @Autowired private AuthService authService;
-  @Autowired private PasswordEncoder passwordEncoder;
+  private final AuthService authService;
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   public ResponseEntity<AuthResponseDto> signupAuth(SignupRequestDto signupRequestDto)

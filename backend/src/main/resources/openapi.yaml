@@ -72,6 +72,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
+        '403':
+          description: Invalid login credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '500':
           description: Internal server error
 
@@ -309,3 +315,8 @@ components:
         - FRAGRANCE
         - SKINCARE
       description: Enum representing the niche of the creator.
+    ErrorMessage:
+      type: object
+      properties:
+        error:
+          type: string
