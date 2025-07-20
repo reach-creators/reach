@@ -6,6 +6,9 @@ info:
   description: |
     This is the API specification for the endpoints included in the Reach web app backend.
 
+security:
+  - bearerAuth: []
+
 paths:
   /health:
     get:
@@ -195,6 +198,11 @@ paths:
           description: Creator not found
 
 components:
+  securitySchemes:
+    bearerAuth: # This name must match what you use in 'security'
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # Optional: for documentation only
   schemas:
     HelloWorld:
       type: object

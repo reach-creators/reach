@@ -9,17 +9,19 @@ import com.reach.backend.exceptions.UsernameAlreadyExistsException;
 import com.reach.backend.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
 @Controller
 public class AuthController implements AuthApi {
 
   @Autowired private AuthService authService;
+  @Autowired private PasswordEncoder passwordEncoder;
 
   @Override
   public ResponseEntity<AuthResponseDto> signupAuth(SignupRequestDto signupRequestDto)
       throws UsernameAlreadyExistsException {
-    String token = authService.createAuthentication(MAPPER.map(signupRequestDto));
+    String token = authService.createAuthentication(MAPPER.map(signupRequestDto, passwordEncoder));
     return ResponseEntity.ok(new AuthResponseDto().token(token));
   }
 

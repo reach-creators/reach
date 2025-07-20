@@ -8,26 +8,22 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Mapper
 public interface AuthMapper {
+
   AuthMapper MAPPER = Mappers.getMapper(AuthMapper.class);
 
   @Mapping(source = "role", target = "userType")
-  @Mapping(source = "password", target = "password", qualifiedByName = "encrypt")
   User map(SignupRequestDto dto);
 
-  @Mapping(source = "password", target = "password", qualifiedByName = "encrypt")
   LoginRequest map(LoginRequestDto dto);
 
-  @Named(value = "encrypt")
-  default String encrypt(String password) {
-    return passwordEncoder().encode(password);
+  default User map(SignupRequestDto dto, PasswordEncoder passwordEncoder) {
+    return map(dto.password(passwordEncoder.encode(dto.getPassword())));
   }
 
-  private PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
 }
