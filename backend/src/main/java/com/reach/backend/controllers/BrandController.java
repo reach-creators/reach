@@ -7,13 +7,15 @@ import com.example.reach.backend.api.BrandApi;
 import com.example.reach.backend.dto.BrandDto;
 import com.reach.backend.domain.tables.Brand;
 import com.reach.backend.services.BrandService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+@RequiredArgsConstructor
 @Controller
-public final class BrandController implements BrandApi {
-  @Autowired private BrandService brandService;
+public class BrandController implements BrandApi {
+
+  private final BrandService brandService;
 
   @Override
   public ResponseEntity<BrandDto> getBrand(Integer id) {

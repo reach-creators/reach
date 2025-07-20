@@ -6,6 +6,9 @@ info:
   description: |
     This is the API specification for the endpoints included in the Reach web app backend.
 
+security:
+  - bearerAuth: []
+
 paths:
   /health:
     get:
@@ -29,6 +32,55 @@ paths:
                 $ref: '#/components/schemas/HelloWorldError'
         '500':
           description: Internal server error
+  /signup:
+    post:
+      tags:
+        - Auth
+      summary: Sign up user
+      description: Creates and authenticates a new user with a given role
+      operationId: signupAuth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '200':
+          description: User and token created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '500':
+          description: Internal server error
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Login user
+      description: Returns the token of an authenticated user
+      operationId: loginAuth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: User and token created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '403':
+          description: Invalid login credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal server error
+
   /brand:
     post:
       tags:
@@ -152,6 +204,11 @@ paths:
           description: Creator not found
 
 components:
+  securitySchemes:
+    bearerAuth: # This name must match what you use in 'security'
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # Optional: for documentation only
   schemas:
     HelloWorld:
       type: object
@@ -171,6 +228,37 @@ components:
           type: string
         randomNumber:
           type: number
+
+    SignupRequest:
+      type: object
+      description: Creates new user authentication
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          enum:
+            - BRAND
+            - CREATOR
+            - ADMIN
+            -
+    LoginRequest:
+      type: object
+      description: Request token for existing user
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      description: Returns token for authenticated users
+      properties:
+        token:
+          type: string
+
     Brand:
       type: object
       description: Brand created on the frontend level containing all details
@@ -195,6 +283,7 @@ components:
             $ref: '#/components/schemas/Niche'
         region:
           type: string
+
     Creator:
       type: object
       properties:
@@ -226,3 +315,8 @@ components:
         - FRAGRANCE
         - SKINCARE
       description: Enum representing the niche of the creator.
+    ErrorMessage:
+      type: object
+      properties:
+        error:
+          type: string

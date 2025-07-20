@@ -7,14 +7,15 @@ import com.example.reach.backend.api.CreatorApi;
 import com.example.reach.backend.dto.CreatorDto;
 import com.reach.backend.domain.tables.Creator;
 import com.reach.backend.services.CreatorService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+@RequiredArgsConstructor
 @Controller
-public final class CreatorController implements CreatorApi {
+public class CreatorController implements CreatorApi {
 
-  @Autowired private CreatorService creatorService;
+  private final CreatorService creatorService;
 
   @Override
   public ResponseEntity<CreatorDto> getCreator(Integer id) {
