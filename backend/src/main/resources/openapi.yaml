@@ -81,7 +81,33 @@ paths:
         '500':
           description: Internal server error
 
-  /brand:
+  /brands:
+    get:
+      tags:
+        - Brand
+      summary: Get all brands (paginated summary)
+      description: Retrieves a paginated list of brand summaries.
+      operationId: getAllBrands
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 0
+          description: The page number to retrieve.
+        - in: query
+          name: size
+          schema:
+            type: integer
+            default: 30
+          description: The number of items per page.
+      responses:
+        '200':
+          description: A paginated list of brand summaries.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrandSummaryPage'
     post:
       tags:
         - Brand
@@ -105,7 +131,7 @@ paths:
       tags:
         - Brand
       summary: Update an existing Brand
-      description: Update an existing Brand in the database
+      description: "Update an existing Brand in the database. Note: The brand ID should be in the request body."
       operationId: updateBrand
       requestBody:
         required: true
@@ -118,7 +144,8 @@ paths:
           description: Brand successfully updated
         '404':
           description: Brand to be updated not found
-  /brand/{id}:
+
+  /brands/{id}:
     get:
       tags:
         - Brand
@@ -142,7 +169,33 @@ paths:
         '404':
           description: Brand not found
 
-  /creator:
+  /creators:
+    get:
+      tags:
+        - Creator
+      summary: Get all creators (paginated summary)
+      description: Retrieves a paginated list of creator summaries.
+      operationId: getAllCreators
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 0
+          description: The page number to retrieve.
+        - in: query
+          name: size
+          schema:
+            type: integer
+            default: 30
+          description: The number of items per page.
+      responses:
+        '200':
+          description: A paginated list of creator summaries.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatorSummaryPage'
     post:
       tags:
         - Creator
@@ -168,6 +221,7 @@ paths:
       tags:
         - Creator
       summary: Update an existing creator
+      description: "Update an existing creator in the database. Note: The creator ID should be in the request body."
       operationId: updateCreator
       requestBody:
         required: true
@@ -181,7 +235,7 @@ paths:
         '404':
           description: Creator not found
 
-  /creator/{id}:
+  /creators/{id}:
     get:
       tags:
         - Creator
@@ -242,7 +296,7 @@ components:
             - BRAND
             - CREATOR
             - ADMIN
-            -
+
     LoginRequest:
       type: object
       description: Request token for existing user
@@ -284,6 +338,33 @@ components:
         region:
           type: string
 
+    BrandSummary:
+      type: object
+      description: A summary of a brand, containing only essential information for lists.
+      properties:
+        name:
+          type: string
+        logo:
+          type: string
+          format: uri
+
+    BrandSummaryPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrandSummary'
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+        number:
+          type: integer
+
     Creator:
       type: object
       properties:
@@ -302,6 +383,30 @@ components:
         region:
           type: string
 
+    CreatorSummary:
+      type: object
+      description: A summary of a creator, containing only the name.
+      properties:
+        name:
+          type: string
+
+    CreatorSummaryPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreatorSummary'
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+        number:
+          type: integer
+
     Niche:
       type: string
       enum:
@@ -315,6 +420,7 @@ components:
         - FRAGRANCE
         - SKINCARE
       description: Enum representing the niche of the creator.
+
     ErrorMessage:
       type: object
       properties:
