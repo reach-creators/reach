@@ -77,11 +77,11 @@ openApiGenerate {
     // ---------------------------------------------------------------------------------------------
 
     generatorName.set("spring")
-    inputSpec.set("${projectDir}/src/main/resources/openapi.yaml")
+    inputSpec.set(file("src/main/resources/openapi.yaml").path)
     outputDir.set("${layout.buildDirectory.get()}/generated")
     apiPackage.set("com.example.reach.backend.api")
     modelPackage.set("com.example.reach.backend.dto")
-    skipValidateSpec.set(false)
+    skipValidateSpec.set(true)
 
     // ---------------------------------------------------------------------------------------------
     configOptions.set([

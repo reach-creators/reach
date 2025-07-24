@@ -5,9 +5,13 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 import com.example.reach.backend.api.CreatorApi;
 import com.example.reach.backend.dto.CreatorDto;
+import com.example.reach.backend.dto.CreatorSummaryPageDto;
 import com.reach.backend.domain.tables.Creator;
 import com.reach.backend.services.CreatorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -16,6 +20,21 @@ import org.springframework.stereotype.Controller;
 public class CreatorController implements CreatorApi {
 
   private final CreatorService creatorService;
+
+  @Override
+  public ResponseEntity<CreatorSummaryPageDto> getAllCreators(Integer page, Integer size) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Creator> creatorPage = creatorService.getAllCreators(pageable);
+
+    CreatorSummaryPageDto response = new CreatorSummaryPageDto();
+    response.setContent(creatorPage.getContent().stream().map(MAPPER::mapToSummary).toList());
+    response.setTotalPages(creatorPage.getTotalPages());
+    response.setTotalElements(creatorPage.getTotalElements());
+    response.setSize(creatorPage.getSize());
+    response.setNumber(creatorPage.getNumber());
+
+    return ResponseEntity.ok(response);
+  }
 
   @Override
   public ResponseEntity<CreatorDto> getCreator(Integer id) {

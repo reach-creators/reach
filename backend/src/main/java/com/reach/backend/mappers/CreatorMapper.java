@@ -1,6 +1,7 @@
 package com.reach.backend.mappers;
 
 import com.example.reach.backend.dto.CreatorDto;
+import com.example.reach.backend.dto.CreatorSummaryDto;
 import com.reach.backend.domain.tables.Creator;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -12,4 +13,6 @@ public interface CreatorMapper {
   CreatorDto map(Creator domain);
 
   Creator map(CreatorDto dto);
+
+  CreatorSummaryDto mapToSummary(Creator creator);
 }
