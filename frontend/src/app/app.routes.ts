@@ -6,6 +6,8 @@ import { LoginComponent } from "./components/login/login.component";
 import { AboutComponent } from "./components/about/about.component";
 import { SignupBrandComponent } from "./components/signup-brand/signup-brand.component";
 import { SignupCreatorComponent } from "./components/signup-creator/signup-creator.component";
+import { CreatorListComponent } from "./components/creator-list/creator-list.component";
+import { BrandListComponent } from "./components/brand-list/brand-list.component";
 
 export const routes: Routes = [
   { path: "", component: NavbarComponent },
@@ -14,4 +16,6 @@ export const routes: Routes = [
   { path: "about", component: AboutComponent },
   { path: "signup/brand", component: SignupBrandComponent },
   { path: "signup/creator", component: SignupCreatorComponent },
+  { path: "creators", component: CreatorListComponent },
+  { path: "brands", component: BrandListComponent } 
 ];

@@ -1,0 +1,39 @@
+<!-- Enhanced Creators List with Effects -->
+<div class="min-h-screen bg-gradient-to-br from-blue-100 to-green-200 p-10">
+    <h1 class="text-4xl font-bold text-center text-red-800 drop-shadow-md mb-10">
+      Brands List
+    </h1>
+  
+    <div class="flex justify-center">
+      <div class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-5xl">
+        <p-table [value]="brands" [tableStyle]="{ 'min-width': '100%' }" styleClass="custom-table">
+          <ng-template #header>
+            <tr class="bg-red-100 text-red-700 text-lg">
+              <th>Name</th>
+             <th>Revenue Per Month</th>
+              <th>Items Sold</th>
+              <th>Region</th>
+              <th>Niches</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-brand let-i="rowIndex">
+            <tr 
+              class="transition-transform duration-300 ease-in-out transform hover:scale-[1.01] hover:shadow-md"
+              [ngClass]="{ 'bg-white': i % 2 === 0, 'bg-red-50': i % 2 !== 0 }"
+            >
+              <td>{{ brand.name }}</td>
+              <td>{{ brand.revenuePerMonth }}$</td>
+              <td>{{ brand.itemsSold }}</td>
+              <td>{{ brand.region }}</td>
+              <td>{{ brand.niches.join(', ') }}</td>
+             <!--add apply to brand button with primeng button-->
+             <td>
+              <p-button label="Apply" (onClick)="applyToBrand(brand)" />
+             </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+  

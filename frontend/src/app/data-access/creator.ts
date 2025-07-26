@@ -1,4 +1,4 @@
-// no need for this
+// for getallcreators
 export interface Creator {
   id?: number;
   name: string;

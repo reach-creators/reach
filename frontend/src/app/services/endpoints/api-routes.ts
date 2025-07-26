@@ -22,3 +22,5 @@ export const health = new RouteBuilder().resolve("health").build();
 export const signup = new RouteBuilder().resolve("signup").build();
 export const creator = new RouteBuilder().resolve("creator").build();
 export const brand = new RouteBuilder().resolve("brand").build();
+export const creators = new RouteBuilder().resolve("creators").build();
+export const brands = new RouteBuilder().resolve("brands").build();

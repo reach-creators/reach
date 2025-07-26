@@ -13,6 +13,10 @@ import { Brand } from '../../data-access/brand';
 import { AuthService } from '../../services/auth.service';
 import { AuthEndpoints } from '../../services/endpoints/auth-endpoints';
 import { SignupBrandModel } from '../../models/auth/signup-brand-model';
+import { InputGroup } from 'primeng/inputgroup';
+import { InputGroupAddon } from 'primeng/inputgroupaddon';
+import { FormControl } from '@angular/forms';
+
 @Component({
   selector: 'app-signup-brand',
   imports: [
@@ -23,10 +27,12 @@ import { SignupBrandModel } from '../../models/auth/signup-brand-model';
     SelectModule,
     MultiSelectModule,
     InputTextModule,
-    
+    InputGroup,
+    InputGroupAddon,
     RouterModule,
     Card,
     InputWithIconComponent,
+    
   ],
   templateUrl: './signup-brand.component.html',
   styleUrl: './signup-brand.component.scss'
