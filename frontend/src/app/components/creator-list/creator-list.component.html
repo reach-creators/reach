@@ -1,0 +1,21 @@
+<div>
+    <p-table [value]="creators" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template #header>
+            <tr>
+                <th>Name</th>
+                <th>Sales Per Month</th>
+                <th>Items Sold</th>
+                <th>Region</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-creator>
+            <tr>
+                <td>{{ creator.name }}</td>
+                <td>{{ creator.salesPerMonth }}</td>
+                <td>{{ creator.itemsSold }}</td>
+                <td>{{ creator.region }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+</div>

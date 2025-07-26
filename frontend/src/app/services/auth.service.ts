@@ -1,10 +1,12 @@
-import { Injectable, signal } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { inject, Injectable, signal } from "@angular/core";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
   private readonly token = signal(undefined as string | undefined);
+  private readonly http = inject(HttpClient);
 
   registerToken(token: string) {
     this.token.set(token);
@@ -17,4 +19,5 @@ export class AuthService {
     }
     throw Error("Cannot retrieve undefined token");
   }
+
 }

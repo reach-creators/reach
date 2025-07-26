@@ -53,14 +53,26 @@ export class SignupComponent {
     return role.charAt(0) + role.substring(1).toLowerCase();
   }
 
-  signupUser() {
+  async signupUser() {
+    //hash password before sending to backend
+    const hashedPassword = await this.hashPassword(
+      this.signupModel.password.value!,
+    );
     this.authEndpoints
       .signup({
         email: this.signupModel.email.value!,
-        password: this.signupModel.password.value!,
+        password: hashedPassword,
         role: this.signupModel.role.value!,
       })
       .subscribe((authResponse) => {});
+    if (this.signupModel.role.value == "BRAND") {
+      // navigate to /signup/brand
+      this.router.navigate(["/signup/brand"]);
+    }
+    else if (this.signupModel.role.value == "CREATOR") {
+      // navigate to /signup/creator
+      this.router.navigate(["/signup/creator"]);
+    }
   }
 
   step = 1;
